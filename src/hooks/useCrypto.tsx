@@ -1,8 +1,8 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
-import type { CryptoResponse } from "./interfaces/crypto-response.ts";
+import type {CryptoResponse} from "../features/crypto/interfaces/crypto-response.ts";
 import axios from "axios";
 
-const Crypto = () => {
+const useCrypto = () => {
     const [cryptos, setCryptos] = useState<CryptoResponse | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -49,22 +49,12 @@ const Crypto = () => {
         void getCrypto();
     }, [getCrypto]); // getCrypto como dependencia
 
+    return {
+        cryptos: cryptos?.data ?? [],
+        loading,
+        error,
+        refresh: getCrypto
+    }
+}
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
-
-    return (
-        <>
-            <h1>Lista de criptomonedas</h1>
-            <ul>
-                {cryptos?.data?.map(crypto => (
-                    <li key={crypto.id}>
-                        <strong>{crypto.name}</strong> ({crypto.symbol}) - ${parseFloat(crypto.priceUsd).toFixed(2)}
-                    </li>
-                ))}
-            </ul>
-        </>
-    );
-};
-
-export default Crypto;
+export default useCrypto;
