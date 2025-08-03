@@ -6,6 +6,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>('');
     const navigation = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -18,12 +19,14 @@ const Login = () => {
             { headers: { 'x-api-key': 'reqres-free-v1' } }
         )
         .then(res => {
+            setError(null);
             console.log(res);
             localStorage.setItem('token', res.data.token);
             navigation('/');
         })
         .catch(err => {
             console.log(err);
+            setError(err.response.data.error);
         })
         .finally(() => {
             setIsLoading(false);
@@ -115,6 +118,7 @@ const Login = () => {
                             )}
                         </button>
                     </form>
+                    <span className="text-red-500 text-sm">{error}</span>
 
                     {/* Divider */}
                     <div className="my-6 flex items-center">
