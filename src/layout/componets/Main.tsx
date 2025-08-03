@@ -1,4 +1,4 @@
-import CryptoList from "../../features/crypto/components/CryptoList.tsx";
+import {Outlet} from "react-router-dom";
 
 const Main = () => {
     return (
@@ -11,7 +11,7 @@ const Main = () => {
                     The web for crypto lovers
                 </p>
             </div>
-            <CryptoList />
+            <Outlet />
         </main>
     )
 }
